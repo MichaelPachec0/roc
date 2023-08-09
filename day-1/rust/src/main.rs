@@ -27,6 +27,34 @@
 fn main() {
     println!("Hello, world!");
 }
+fn example(input: &str) -> i32 {
+    input
+        .chars()
+        .fold(0, |acc, x| if x == '(' { acc + 1 } else { acc - 1 })
+}
 #[cfg(test)]
 mod tests {
+    use super::*;
+    #[test]
+    fn example_test() {
+        // For example:
+        // (()) and ()() both result in floor 0.
+        // ((( and (()(()( both result in floor 3.
+        // ))((((( also results in floor 3.
+        // ()) and ))( both result in floor -1 (the first basement level).
+        // ))) and )())()) both result in floor -3.
+        let strings = vec![
+            "(())", "()()", "(((", "(()(()(", "))(((((", "())", "))(", ")))", ")())())",
+        ];
+        let solutions = vec![0, 0, 3, 3, 3, -1, -1, -3, -3];
+        strings
+            .iter()
+            .enumerate()
+            .zip(solutions)
+            .for_each(|((iter, str), sol)| {
+                println!("ITERATION {iter}");
+                let actual = example(str);
+                assert_eq!(actual, sol, "EXPECTED: {sol} ACTUAL: {actual}");
+            })
+    }
 }
