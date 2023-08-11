@@ -38,6 +38,7 @@ mod tests {
     use itertools::{Itertools, Position};
     use std::fs::File;
     use std::io::{BufRead, BufReader};
+    use std::{env, fs};
 
     /// Helper function to return a File Buffer. Used to isolate imperative code from the
     /// codebase
@@ -95,5 +96,11 @@ mod tests {
                 let actual = example(str);
                 assert_eq!(actual, sol, "EXPECTED: {sol} ACTUAL: {actual}");
             })
+    }
+    #[test]
+    fn test_cwd() {
+        let directory = env::current_dir().unwrap();
+        let directory = directory.to_str().unwrap();
+        println!("THIS IS THE WAY: {directory}");
     }
 }
