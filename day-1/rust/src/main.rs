@@ -32,12 +32,30 @@ fn example(input: &str) -> i32 {
         .chars()
         .fold(0, |acc, x| if x == '(' { acc + 1 } else { acc - 1 })
 }
+fn part_two(input: &str) -> Option<u32> {
+    let mut acc = 0;
+    for (level, ch) in input.chars().enumerate() {
+        if ch == '(' {
+            acc += 1;
+        } else {
+            acc -= 1;
+        }
+        if acc == -1 {
+            // NOTE: remember that enumerate starts at 0, we want the Position
+            //     (which starts at 1) so add that here
+            return Some((level as u32) + 1);
+        }
+    }
+    return None;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use itertools::{Itertools, Position};
     use std::fs::File;
     use std::io::{BufRead, BufReader};
+    use std::time::{Duration, Instant};
     use std::{env, fs};
 
     /// Helper function to return a File Buffer. Used to isolate imperative code from the
@@ -105,6 +123,18 @@ mod tests {
             println!("ITER: {iter} awnser: {actual}");
         });
     }
+    #[test]
+    fn part_two_test() {
+        let strings = reader("../input.txt", None).collect::<Vec<String>>();
+        strings.iter().enumerate().for_each(|(iter, str)| {
+            match part_two(str) {
+                Some(val) => println!("ITER: {iter} awnser {val}"),
+                // NOTE: There is supposed to be a solution, if not then panic.
+                None => panic!("NO SOLUTION!"),
+            };
+        })
+    }
+    #[test]
     fn test_cwd() {
         let directory = env::current_dir().unwrap();
         let directory = directory.to_str().unwrap();
