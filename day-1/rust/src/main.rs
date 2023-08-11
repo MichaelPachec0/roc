@@ -98,6 +98,13 @@ mod tests {
             })
     }
     #[test]
+    fn part_1() {
+        let strings = reader("../input.txt", None).collect::<Vec<String>>();
+        strings.iter().enumerate().for_each(|(iter, str)| {
+            let actual = example(str);
+            println!("ITER: {iter} awnser: {actual}");
+        });
+    }
     fn test_cwd() {
         let directory = env::current_dir().unwrap();
         let directory = directory.to_str().unwrap();
